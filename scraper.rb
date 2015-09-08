@@ -32,7 +32,7 @@ def scrape_list(url)
       term: 2012,
       source: 'http://apps.asamblea.gob.ni/Recursos/rpt3/'
     }
-    puts data
+    # puts data
     ScraperWiki.save_sqlite([:name, :party, :term], data)
   end
 end
