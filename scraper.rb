@@ -22,17 +22,15 @@ def scrape_list(url)
   noko = noko_for(url)
   noko.xpath('//table[//tr[contains(.,"APELLIDOS")]]//tr').drop(2).each do |tr|
     tds = tr.css('td')
-    email = tds[2].text.tidy
-    email = tds[3].text.tidy if email.to_s.empty?
-
     data = { 
       name: tds[1].text.tidy.sub('DIP. ',''),
       party: tds[4].text.tidy,
-      email: email,
+      email: tds[2].text.tidy,
       term: 2012,
       source: 'http://apps.asamblea.gob.ni/Recursos/rpt3/'
     }
-    # puts data
+    data[:party] = 'SIN BANCADA' if data[:party].to_s.empty?
+    data[:email] = tds[3].text.tidy if data[:email].to_s.empty?
     ScraperWiki.save_sqlite([:name, :party, :term], data)
   end
 end
