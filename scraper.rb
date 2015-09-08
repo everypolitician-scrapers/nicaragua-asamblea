@@ -20,13 +20,13 @@ end
 
 def scrape_list(url)
   noko = noko_for(url)
-  noko.xpath('//table[//tr[contains(.,"APELLIDOS")]]//tr').each do |tr|
+  noko.xpath('//table[//tr[contains(.,"APELLIDOS")]]//tr').drop(2).each do |tr|
     tds = tr.css('td')
     email = tds[2].text.tidy
     email = tds[3].text.tidy if email.to_s.empty?
 
     data = { 
-      name: tds[1].text.sub('DIP. ',''),
+      name: tds[1].text.tidy.sub('DIP. ',''),
       party: tds[4].text.tidy,
       email: email,
       term: 2012,
